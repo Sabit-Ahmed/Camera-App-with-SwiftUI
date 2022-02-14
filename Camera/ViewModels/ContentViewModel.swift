@@ -9,6 +9,7 @@ import Foundation
 
 import CoreImage
 import VideoToolbox
+import UIKit
 
 class ContentViewModel: ObservableObject {
   
@@ -28,11 +29,27 @@ class ContentViewModel: ObservableObject {
       .receive(on: RunLoop.main)
       // 3
       .compactMap { buffer in
-        return CGImage.create(from: buffer)
+          guard let buffer = buffer else {
+              return nil
+          }
+          return UIImage(pixelBuffer: buffer)?.cgImage
 
       }
       // 4
       .assign(to: &$frame)
 
   }
+}
+
+extension UIImage {
+    public convenience init?(pixelBuffer: CVPixelBuffer) {
+        var cgImage: CGImage?
+        VTCreateCGImageFromCVPixelBuffer(pixelBuffer, options: nil, imageOut: &cgImage)
+
+        guard let cgImage = cgImage else {
+            return nil
+        }
+
+        self.init(cgImage: cgImage)
+    }
 }
