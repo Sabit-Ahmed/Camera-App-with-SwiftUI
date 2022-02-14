@@ -78,7 +78,7 @@ class CameraManager: ObservableObject {
             session.commitConfiguration()
         }
         
-        let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front)
+        let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back)
         
         guard let camera = device else {
           status = .failed
@@ -107,6 +107,7 @@ class CameraManager: ObservableObject {
             
           let videoConnection = videoOutput.connection(with: .video)
           videoConnection?.videoOrientation = .portrait
+          videoConnection?.isVideoMirrored = true
             
         } else {
           status = .failed
