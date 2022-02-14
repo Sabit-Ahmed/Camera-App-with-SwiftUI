@@ -78,7 +78,7 @@ class CameraManager: ObservableObject {
             session.commitConfiguration()
         }
         
-        let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back)
+        let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front)
         
         guard let camera = device else {
           status = .failed
